@@ -10,35 +10,35 @@ public class Mastermind {
 		game = new Game(taille);
 		
 		if (afficheSolution) {
-			game.printTableau();
+			game.printSolution();
 		}
 		
 		while (!found) {
 			char [] proposition = getProposition();
-			int bienPlace = compareTableau(game.getTableau(), proposition);
+			int bienPlace = compareTableau(game.getSolution(), proposition);
 			
-			if (bienPlace == game.getTableau().length) {
+			if (bienPlace == game.getSolution().length) {
 				found = true;
 			}
 		}
-		System.out.println();
+
 		System.out.println(" ----- gagné ----- ");
 		
 	}
 	
-	// compare les tableaux
-	private int compareTableau(char [] jeuOriginal, char [] prop) {
+	// compare les tableaux solution et proposition
+	private int compareTableau(char [] solOriginal, char [] prop) {
 		
-		char [] jeu = jeuOriginal.clone();
+		char [] sol = solOriginal.clone();
 		
-		int bienPlaces = 0;
-		int malPlaces = 0;
+		int bienPlace = 0;
+		int malPlace = 0;
 		
 		for (int i = 0 ; i < prop.length ; i++) {
-			if (prop[i] == jeu[i]) {
-				bienPlaces ++;
+			if (prop[i] == sol[i]) {
+				bienPlace ++;
 				// caractere trouve, on l'efface
-				jeu[i] = ' ';
+				sol[i] = ' ';
 			}
 		}
 
@@ -46,21 +46,21 @@ public class Mastermind {
 			boolean found = false;
 			int k = 0;
 
-			while (!found && k < jeu.length - 1) {
-				if (prop[j] == jeu[k]) {
+			while (!found && k < sol.length - 1) {
+				if (prop[j] == sol[k]) {
 					// caractere trouve, on l'efface
-					jeu[k] = ' ';
-					malPlaces ++;
+					sol[k] = ' ';
+					malPlace ++;
 					found = true;
 				}
 				k++;
 			}
 		}
 		
-		System.out.println(bienPlaces + " élément(s) bien placé(s) ");
-		System.out.println(malPlaces + " élément(s) mal placé(s) ");
+		System.out.println(bienPlace + " élément(s) bien placé(s) ");
+		System.out.println(malPlace + " élément(s) mal placé(s) ");
 		
-		return bienPlaces;
+		return bienPlace;
 	}
 
 	// recueille entrée clavier
@@ -69,12 +69,12 @@ public class Mastermind {
 		boolean stringOK = false;
 		char [] prop = null;
 		System.out.println("votre proposition :");
+		
 		while (!stringOK) {
-			
 			Scanner sc = new Scanner(System.in);
 			String str = sc.nextLine();	
 	
-			if (str.length() != game.getTableau().length) {
+			if (str.length() != game.getSolution().length) {
 				System.out.println("longueur proposition erronée, réessayez : ");
 			} else {
 				stringOK = true;
@@ -88,7 +88,7 @@ public class Mastermind {
 	// convertit string en tableau
 	private char [] StringToArray (String str) {
 		
-		char [] prop = new char [game.getTableau().length];
+		char [] prop = new char [game.getSolution().length];
 		
 		for (int i = 0 ; i < str.length() ; i++) {
 			prop[i] = str.charAt(i);
@@ -97,8 +97,8 @@ public class Mastermind {
 		return prop;
 	}
 
-	// imprime le tableau
-	public void printTableau (char [] tab) {
+	// affiche le tableau
+	public void printArray (char [] tab) {
 		
 		for (int i = 0 ; i < tab.length ; i++) {
 			System.out.print(tab[i]);
